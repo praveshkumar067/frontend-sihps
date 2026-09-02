@@ -13,10 +13,36 @@ export interface UserSession {
   trainee_type?: TraineeType;
 }
 
+export interface TraineeRegData {
+  fullName: string;
+  vid: string;
+  phone?: string;
+  traineeType: TraineeType;
+  skillTrade?: string;
+  tcId?: string;
+  stateDistrict?: string;
+}
+
+export interface EmployerRegData {
+  companyName: string;
+  employerType?: string;
+  registrationNumber?: string;
+  contactEmail?: string;
+  location?: string;
+}
+
+export interface OfficerRegData {
+  officerName: string;
+  designation?: string;
+  officerId: string;
+  jurisdiction?: string;
+}
+
 interface AuthContextType {
   user: UserSession | null;
   isAuthenticated: boolean;
   loginAsRole: (role: Role, credentials?: { vid?: string; name?: string; traineeType?: TraineeType }) => Promise<boolean>;
+  registerAsRole: (role: Role, data: TraineeRegData | EmployerRegData | OfficerRegData) => Promise<boolean>;
   giveConsent: () => void;
   logout: () => void;
   updateTrustTier: (tier: number) => void;
@@ -89,6 +115,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
+  const registerAsRole = async (
+    role: Role,
+    data: TraineeRegData | EmployerRegData | OfficerRegData
+  ): Promise<boolean> => {
+    let session: UserSession;
+
+    if (role === 'trainee') {
+      const tData = data as TraineeRegData;
+      const cleanVid = tData.vid ? tData.vid.replace(/\D/g, '') : '982344128801';
+      const traineeId = `TR-${Math.floor(100000 + Math.random() * 900000)}`;
+      session = {
+        role: 'trainee',
+        id: traineeId,
+        name: tData.fullName,
+        token: `mock-jwt-token-trainee-reg-${Date.now()}`,
+        trainee_type: tData.traineeType,
+        traineeProfile: {
+          ...MOCK_TRAINEE,
+          full_name: tData.fullName,
+          trainee_id: traineeId,
+          vid: cleanVid,
+          consent_given: true,
+          trainee_type: tData.traineeType,
+          sector: tData.skillTrade || MOCK_TRAINEE.sector,
+          training_center: tData.tcId || MOCK_TRAINEE.training_center,
+          district: tData.stateDistrict || MOCK_TRAINEE.district,
+          phone: tData.phone || MOCK_TRAINEE.phone
+        }
+      };
+    } else if (role === 'employer') {
+      const eData = data as EmployerRegData;
+      const empId = eData.registrationNumber || `EMP-${Math.floor(10000 + Math.random() * 90000)}`;
+      session = {
+        role: 'employer',
+        id: empId,
+        name: eData.companyName,
+        token: `mock-jwt-token-employer-reg-${Date.now()}`
+      };
+    } else {
+      const oData = data as OfficerRegData;
+      const offId = oData.officerId || `OFF-${Math.floor(10000 + Math.random() * 90000)}`;
+      session = {
+        role: 'officer',
+        id: offId,
+        name: `${oData.officerName} (${oData.jurisdiction || 'District Nodal Officer'})`,
+        token: `mock-jwt-token-officer-reg-${Date.now()}`
+      };
+    }
+
+    setUser(session);
+    localStorage.setItem('livelihood_user_session', JSON.stringify(session));
+    return true;
+  };
+
   const giveConsent = () => {
     if (user && user.traineeProfile) {
       const updatedProfile = { ...user.traineeProfile, consent_given: true };
@@ -118,6 +198,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         isAuthenticated: !!user,
         loginAsRole,
+        registerAsRole,
         giveConsent,
         logout,
         updateTrustTier
