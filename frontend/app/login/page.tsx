@@ -35,7 +35,7 @@ function LoginContent() {
   const [traineeType, setTraineeType] = useState<TraineeType>('formal');
   const [vidInput, setVidInput] = useState<string>('9823-4412-8801');
   const [employerName, setEmployerName] = useState<string>('Apex Micro-Electronics Pvt Ltd');
-  const [officerId, setOfficerId] = useState<string>('OFF-77201 (Patna District)');
+  const [officerId, setOfficerId] = useState<string>('OFF-77201 (Pune District)');
   const [consentChecked, setConsentChecked] = useState<boolean>(true);
 
   // Registration form state - Trainee
@@ -44,8 +44,8 @@ function LoginContent() {
   const [regPhone, setRegPhone] = useState<string>('');
   const [regTraineeType, setRegTraineeType] = useState<TraineeType>('formal');
   const [regSkillTrade, setRegSkillTrade] = useState<string>('Electrical & Electronics');
-  const [regTcId, setRegTcId] = useState<string>('TC-PATNA-102');
-  const [regStateDistrict, setRegStateDistrict] = useState<string>('Patna, Bihar');
+  const [regTcId, setRegTcId] = useState<string>('TC-PUNE-102');
+  const [regStateDistrict, setRegStateDistrict] = useState<string>('Pune, Maharashtra');
   const [regConsent, setRegConsent] = useState<boolean>(true);
 
   // Registration form state - Employer
@@ -59,7 +59,7 @@ function LoginContent() {
   const [regOfficerName, setRegOfficerName] = useState<string>('');
   const [regOfficerDesignation, setRegOfficerDesignation] = useState<string>('District Nodal Officer');
   const [regOfficerCode, setRegOfficerCode] = useState<string>('');
-  const [regJurisdiction, setRegJurisdiction] = useState<string>('Patna District, Bihar');
+  const [regJurisdiction, setRegJurisdiction] = useState<string>('Pune District, Maharashtra');
 
   useEffect(() => {
     const initialMode = searchParams.get('mode');
@@ -185,19 +185,19 @@ function LoginContent() {
       setRegPhone('+91 98765 43210');
       setRegTraineeType('formal');
       setRegSkillTrade('Solar PV Technician & Renewable Energy');
-      setRegTcId('TC-PATNA-102');
-      setRegStateDistrict('Patna District, Bihar');
+      setRegTcId('TC-PUNE-102');
+      setRegStateDistrict('Pune District, Maharashtra');
     } else if (selectedRole === 'employer') {
       setRegCompName('SuryaTech Clean Energy Solutions Ltd');
       setRegEmpType('Renewable Energy & Solar Equipment Provider');
       setRegGstin('10AAACS8829K1Z4');
       setRegEmail('hr@suryatech.in');
-      setRegEmpLocation('Patna Industrial Area, Bihar');
+      setRegEmpLocation('Pune Industrial Area, Maharashtra');
     } else if (selectedRole === 'officer') {
       setRegOfficerName('Rajesh Kumar Verma');
       setRegOfficerDesignation('Senior District Skill Development Officer');
       setRegOfficerCode('OFF-98402');
-      setRegJurisdiction('Patna & Nalanda Districts, Bihar');
+      setRegJurisdiction('Pune & Thane Districts, Maharashtra');
     }
   };
 
@@ -538,7 +538,7 @@ function LoginContent() {
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Patna District, Bihar"
+                        placeholder="e.g. Pune District, Maharashtra"
                         value={regStateDistrict}
                         onChange={(e) => setRegStateDistrict(e.target.value)}
                         className="w-full bg-slate-50 border border-slate-300 focus:border-slate-900 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:outline-none"
@@ -611,7 +611,7 @@ function LoginContent() {
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. TC-PATNA-102"
+                        placeholder="e.g. TC-PUNE-102"
                         value={regTcId}
                         onChange={(e) => setRegTcId(e.target.value)}
                         className="w-full bg-slate-50 border border-slate-300 focus:border-slate-900 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-slate-900 focus:outline-none"
@@ -690,7 +690,7 @@ function LoginContent() {
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Patna Industrial Complex"
+                        placeholder="e.g. Pune Industrial Complex"
                         value={regEmpLocation}
                         onChange={(e) => setRegEmpLocation(e.target.value)}
                         className="w-full bg-slate-50 border border-slate-300 focus:border-slate-900 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:outline-none"
@@ -746,7 +746,7 @@ function LoginContent() {
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. Patna District, Bihar"
+                      placeholder="e.g. Pune District, Maharashtra"
                       value={regJurisdiction}
                       onChange={(e) => setRegJurisdiction(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-300 focus:border-slate-900 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:outline-none"
@@ -808,7 +808,7 @@ function LoginContent() {
                     type="button"
                     onClick={() => {
                       setSelectedRole('officer');
-                      setOfficerId('OFF-77201 (Patna District)');
+                      setOfficerId('OFF-77201 (Pune District)');
                     }}
                     className="text-slate-600 hover:text-slate-900 underline"
                   >

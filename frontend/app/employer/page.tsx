@@ -1,28 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { api } from '@/lib/api';
-import { SkillGapData } from '@/lib/types';
+import React from 'react';
 import { EmployerFeedbackForm } from '@/components/employer/EmployerFeedbackForm';
-import { SkillGapHeatmap } from '@/components/employer/SkillGapHeatmap';
 import { Building2 } from 'lucide-react';
 
 export default function EmployerHomePage() {
-  const [heatmapData, setHeatmapData] = useState<SkillGapData[]>([]);
-
-  const fetchHeatmap = async () => {
-    try {
-      const data = await api.getSkillGapDistribution();
-      setHeatmapData(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchHeatmap();
-  }, []);
-
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800">
@@ -37,8 +19,7 @@ export default function EmployerHomePage() {
         </div>
       </div>
 
-      <EmployerFeedbackForm onSubmitted={fetchHeatmap} />
-      <SkillGapHeatmap data={heatmapData} />
+      <EmployerFeedbackForm />
     </div>
   );
 }

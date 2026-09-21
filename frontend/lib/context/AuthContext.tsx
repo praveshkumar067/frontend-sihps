@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       session = {
         role: 'officer',
         id: 'OFF-77201',
-        name: credentials?.name || 'District Officer Sharma (Patna)',
+        name: credentials?.name || 'District Officer Kulkarni (Pune)',
         token: `mock-jwt-token-officer-${Date.now()}`
       };
     }

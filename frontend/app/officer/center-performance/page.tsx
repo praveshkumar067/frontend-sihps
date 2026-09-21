@@ -142,10 +142,10 @@ export default function OfficerCenterPerformancePage() {
               className="bg-transparent text-slate-900 font-semibold focus:outline-none"
             >
               <option value="All">All Districts</option>
-              <option value="Patna">Patna</option>
-              <option value="Gaya">Gaya</option>
-              <option value="Muzaffarpur">Muzaffarpur</option>
-              <option value="Bhagalpur">Bhagalpur</option>
+              <option value="Pune">Pune</option>
+              <option value="Nagpur">Nagpur</option>
+              <option value="Nashik">Nashik</option>
+              <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
             </select>
           </div>
 

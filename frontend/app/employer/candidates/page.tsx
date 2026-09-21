@@ -83,7 +83,7 @@ export default function EmployerCandidatesPage() {
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900">Skill-Matched Trainee Talent Discovery</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Specify your required job skills to instantly search verified trainees trained in Bihar government centers.
+            Specify your required job skills to instantly search verified trainees trained in Maharashtra government centers.
           </p>
         </div>
 
@@ -142,10 +142,10 @@ export default function EmployerCandidatesPage() {
                 className="bg-slate-50 border border-slate-300 text-slate-900 font-semibold px-3 py-1.5 rounded-lg focus:outline-none"
               >
                 <option value="All">All Districts</option>
-                <option value="Patna">Patna</option>
-                <option value="Gaya">Gaya</option>
-                <option value="Muzaffarpur">Muzaffarpur</option>
-                <option value="Bhagalpur">Bhagalpur</option>
+                <option value="Pune">Pune</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
               </select>
             </div>
 

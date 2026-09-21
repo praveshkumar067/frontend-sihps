@@ -204,10 +204,12 @@ export default function TraineeHomePage() {
                 className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-slate-800 focus:outline-none focus:border-indigo-500"
               >
                 <option value="All">All Districts</option>
-                <option value="Patna">Patna</option>
-                <option value="Gaya">Gaya</option>
-                <option value="Muzaffarpur">Muzaffarpur</option>
-                <option value="Bhagalpur">Bhagalpur</option>
+                <option value="Pune">Pune</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                <option value="Solapur">Solapur</option>
+                <option value="Thane">Thane</option>
               </select>
             </div>
 

@@ -58,7 +58,7 @@ export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainee 
             </div>
             <div className="text-right">
               <span className="text-xs font-bold text-emerald-700 font-mono">Trust Tier {trainee.trust_tier}</span>
-              <p className="text-[10px] text-slate-500">Issued by Bihar Skill Development Mission</p>
+              <p className="text-[10px] text-slate-500">Issued by Maharashtra State Skill Development Society (MSSDS)</p>
             </div>
           </div>
 
