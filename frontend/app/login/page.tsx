@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuth, TraineeRegData, EmployerRegData, OfficerRegData } from '@/lib/context/AuthContext';
-import { Role, TraineeType } from '@/lib/types';
+import { useAuth, TrainingCenterRegData, EmployerRegData, OfficerRegData } from '@/lib/context/AuthContext';
+import { Role, TrainingCenterType } from '@/lib/types';
 import {
   ShieldCheck,
   UserCheck,
@@ -27,22 +27,22 @@ function LoginContent() {
   const { loginAsRole, registerAsRole, giveConsent } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [selectedRole, setSelectedRole] = useState<Role>('trainee');
+  const [selectedRole, setSelectedRole] = useState<Role>('training-center');
   const [error, setError] = useState<string>('');
   const [successMsg, setSuccessMsg] = useState<string>('');
 
   // Login form state
-  const [traineeType, setTraineeType] = useState<TraineeType>('formal');
+  const [trainingCenterType, setTrainingCenterType] = useState<TrainingCenterType>('formal');
   const [vidInput, setVidInput] = useState<string>('9823-4412-8801');
   const [employerName, setEmployerName] = useState<string>('Apex Micro-Electronics Pvt Ltd');
   const [officerId, setOfficerId] = useState<string>('OFF-77201 (Pune District)');
   const [consentChecked, setConsentChecked] = useState<boolean>(true);
 
-  // Registration form state - Trainee
+  // Registration form state - Training Center
   const [regFullName, setRegFullName] = useState<string>('');
   const [regVid, setRegVid] = useState<string>('');
   const [regPhone, setRegPhone] = useState<string>('');
-  const [regTraineeType, setRegTraineeType] = useState<TraineeType>('formal');
+  const [regTrainingCenterType, setRegTrainingCenterType] = useState<TrainingCenterType>('formal');
   const [regSkillTrade, setRegSkillTrade] = useState<string>('Electrical & Electronics');
   const [regTcId, setRegTcId] = useState<string>('TC-PUNE-102');
   const [regStateDistrict, setRegStateDistrict] = useState<string>('Pune, Maharashtra');
@@ -81,7 +81,7 @@ function LoginContent() {
     e.preventDefault();
     setError('');
 
-    if (selectedRole === 'trainee') {
+    if (selectedRole === 'training-center') {
       const rawDigits = vidInput.replace(/\D/g, '');
       if (rawDigits.length !== 12) {
         setError('Please enter a valid 12-digit Aadhaar Virtual ID (VID)');
@@ -91,9 +91,9 @@ function LoginContent() {
         setError('Please accept the consent terms to proceed');
         return;
       }
-      await loginAsRole('trainee', { vid: vidInput, traineeType });
+      await loginAsRole('training-center', { vid: vidInput, trainingCenterType });
       giveConsent();
-      router.push('/trainee');
+      router.push('/training-center');
     } else if (selectedRole === 'employer') {
       if (!employerName.trim()) {
         setError('Please enter your company name');
@@ -115,7 +115,7 @@ function LoginContent() {
     e.preventDefault();
     setError('');
 
-    if (selectedRole === 'trainee') {
+    if (selectedRole === 'training-center') {
       if (!regFullName.trim()) {
         setError('Please enter your full name');
         return;
@@ -129,19 +129,19 @@ function LoginContent() {
         setError('Please accept the retention tracking consent terms');
         return;
       }
-      const data: TraineeRegData = {
+      const data: TrainingCenterRegData = {
         fullName: regFullName,
         vid: regVid,
         phone: regPhone,
-        traineeType: regTraineeType,
+        trainingCenterType: regTrainingCenterType,
         skillTrade: regSkillTrade,
         tcId: regTcId,
         stateDistrict: regStateDistrict
       };
-      await registerAsRole('trainee', data);
+      await registerAsRole('training-center', data);
       giveConsent();
-      setSuccessMsg('Registration successful! Redirecting to Trainee Dashboard...');
-      setTimeout(() => router.push('/trainee'), 800);
+      setSuccessMsg('Registration successful! Redirecting to Training Center Dashboard...');
+      setTimeout(() => router.push('/training-center'), 800);
     } else if (selectedRole === 'employer') {
       if (!regCompName.trim()) {
         setError('Please enter your registered organization / company name');
@@ -179,11 +179,11 @@ function LoginContent() {
   };
 
   const fillSampleRegistration = () => {
-    if (selectedRole === 'trainee') {
+    if (selectedRole === 'training-center') {
       setRegFullName('Priya Sharma');
       setRegVid('9823-4412-8801');
       setRegPhone('+91 98765 43210');
-      setRegTraineeType('formal');
+      setRegTrainingCenterType('formal');
       setRegSkillTrade('Solar PV Technician & Renewable Energy');
       setRegTcId('TC-PUNE-102');
       setRegStateDistrict('Pune District, Maharashtra');
@@ -264,17 +264,17 @@ function LoginContent() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedRole('trainee');
+                  setSelectedRole('training-center');
                   setError('');
                 }}
                 className={`py-2.5 px-2 rounded-lg text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 ${
-                  selectedRole === 'trainee'
+                  selectedRole === 'training-center'
                     ? 'bg-slate-900 text-white shadow'
                     : 'text-slate-700 hover:text-slate-950'
                 }`}
               >
                 <UserCheck className="w-4 h-4" />
-                Trainee
+                Training Center
               </button>
 
               <button
@@ -329,11 +329,11 @@ function LoginContent() {
           {/* LOGIN MODE FORM */}
           {mode === 'login' && (
             <form onSubmit={handleLoginSubmit} className="space-y-5">
-              {selectedRole === 'trainee' && (
+              {selectedRole === 'training-center' && (
                 <>
                   <div className="space-y-1.5">
                     <div className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-slate-100 border border-slate-300 px-2.5 py-1 rounded-md">
-                      <Lock className="w-3.5 h-3.5" /> Trainee Login Authentication
+                      <Lock className="w-3.5 h-3.5" /> Training Center Login Authentication
                     </div>
                     <h2 className="text-xl font-extrabold text-slate-900">Aadhaar VID Authentication</h2>
                     <p className="text-xs text-slate-600">
@@ -341,24 +341,24 @@ function LoginContent() {
                     </p>
                   </div>
 
-                  {/* Trainee Sub-Type Selection */}
+                  {/* Training Center Sub-Type Selection */}
                   <div className="space-y-2 pt-1">
                     <label className="text-xs font-bold text-slate-800 block">Employment Sector Type</label>
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
-                        onClick={() => setTraineeType('formal')}
+                        onClick={() => setTrainingCenterType('formal')}
                         className={`p-3 rounded-xl border text-left flex flex-col justify-between gap-2 transition-all ${
-                          traineeType === 'formal'
+                          trainingCenterType === 'formal'
                             ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950 shadow-sm ring-2 ring-indigo-500/20'
                             : 'border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-400'
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <div className={`p-1.5 rounded-lg ${traineeType === 'formal' ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                          <div className={`p-1.5 rounded-lg ${trainingCenterType === 'formal' ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                             <Briefcase className="w-4 h-4" />
                           </div>
-                          <span className="text-xs font-extrabold">Formal Trainee</span>
+                          <span className="text-xs font-extrabold">Formal Training Center</span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-normal leading-tight">
                           Salaried placement, wage contracts & corporate Retention Tracking.
@@ -367,18 +367,18 @@ function LoginContent() {
 
                       <button
                         type="button"
-                        onClick={() => setTraineeType('informal')}
+                        onClick={() => setTrainingCenterType('informal')}
                         className={`p-3 rounded-xl border text-left flex flex-col justify-between gap-2 transition-all ${
-                          traineeType === 'informal'
+                          trainingCenterType === 'informal'
                             ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950 shadow-sm ring-2 ring-emerald-500/20'
                             : 'border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-400'
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <div className={`p-1.5 rounded-lg ${traineeType === 'informal' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                          <div className={`p-1.5 rounded-lg ${trainingCenterType === 'informal' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                             <Store className="w-4 h-4" />
                           </div>
-                          <span className="text-xs font-extrabold">Informal Trainee</span>
+                          <span className="text-xs font-extrabold">Informal Training Center</span>
                         </div>
                         <p className="text-[11px] text-slate-500 font-normal leading-tight">
                           Self-employed, micro-enterprise, UPI QR earnings & geotagged proof.
@@ -467,7 +467,7 @@ function LoginContent() {
                 type="submit"
                 className="w-full py-3.5 px-4 font-bold text-sm bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-md flex items-center justify-center gap-2 transition-all"
               >
-                Authenticate as {selectedRole === 'trainee' ? `${traineeType.toUpperCase()} TRAINEE` : selectedRole.toUpperCase()} <ArrowRight className="w-4 h-4" />
+                Authenticate as {selectedRole === 'training-center' ? `${trainingCenterType.toUpperCase()} TRAINING CENTER` : selectedRole.toUpperCase()} <ArrowRight className="w-4 h-4" />
               </button>
             </form>
           )}
@@ -481,15 +481,15 @@ function LoginContent() {
                   <UserPlus className="w-3.5 h-3.5" /> New Account Registration
                 </div>
                 <h2 className="text-xl font-extrabold text-slate-900">
-                  Register as {selectedRole === 'trainee' ? 'Trainee' : selectedRole === 'employer' ? 'Employer / Partner' : 'District Officer'}
+                  Register as {selectedRole === 'training-center' ? 'Training Center' : selectedRole === 'employer' ? 'Employer / Partner' : 'District Officer'}
                 </h2>
                 <p className="text-xs text-slate-600">
                   Create your profile to access Skill Passports, employment retention tools, or district dashboards.
                 </p>
               </div>
 
-              {/* TRAINEE REGISTRATION FORM */}
-              {selectedRole === 'trainee' && (
+              {/* TRAINING CENTER REGISTRATION FORM */}
+              {selectedRole === 'training-center' && (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
@@ -552,14 +552,14 @@ function LoginContent() {
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
-                        onClick={() => setRegTraineeType('formal')}
+                        onClick={() => setRegTrainingCenterType('formal')}
                         className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${
-                          regTraineeType === 'formal'
+                          regTrainingCenterType === 'formal'
                             ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950 shadow-sm ring-2 ring-indigo-500/20'
                             : 'border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-400'
                         }`}
                       >
-                        <div className={`p-2 rounded-lg ${regTraineeType === 'formal' ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                        <div className={`p-2 rounded-lg ${regTrainingCenterType === 'formal' ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                           <Briefcase className="w-4 h-4" />
                         </div>
                         <div>
@@ -570,14 +570,14 @@ function LoginContent() {
 
                       <button
                         type="button"
-                        onClick={() => setRegTraineeType('informal')}
+                        onClick={() => setRegTrainingCenterType('informal')}
                         className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${
-                          regTraineeType === 'informal'
+                          regTrainingCenterType === 'informal'
                             ? 'border-emerald-600 bg-emerald-50/70 text-emerald-950 shadow-sm ring-2 ring-emerald-500/20'
                             : 'border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-400'
                         }`}
                       >
-                        <div className={`p-2 rounded-lg ${regTraineeType === 'informal' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                        <div className={`p-2 rounded-lg ${regTrainingCenterType === 'informal' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                           <Store className="w-4 h-4" />
                         </div>
                         <div>
@@ -760,7 +760,7 @@ function LoginContent() {
                 type="submit"
                 className="w-full py-3.5 px-4 font-bold text-sm bg-slate-900 hover:bg-slate-800 text-white rounded-xl shadow-md flex items-center justify-center gap-2 transition-all"
               >
-                Register & Access {selectedRole === 'trainee' ? `${regTraineeType.toUpperCase()} PORTAL` : selectedRole.toUpperCase()} <ArrowRight className="w-4 h-4" />
+                Register & Access {selectedRole === 'training-center' ? `${regTrainingCenterType.toUpperCase()} PORTAL` : selectedRole.toUpperCase()} <ArrowRight className="w-4 h-4" />
               </button>
             </form>
           )}
@@ -784,13 +784,13 @@ function LoginContent() {
                   <button
                     type="button"
                     onClick={() => {
-                      setSelectedRole('trainee');
-                      setTraineeType('formal');
+                      setSelectedRole('training-center');
+                      setTrainingCenterType('formal');
                       setVidInput('9823-4412-8801');
                     }}
                     className="text-slate-600 hover:text-slate-900 underline"
                   >
-                    Demo Trainee
+                    Demo Training Center
                   </button>
                   <span>•</span>
                   <button

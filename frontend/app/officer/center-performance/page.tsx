@@ -48,7 +48,7 @@ export default function OfficerCenterPerformancePage() {
     return matchesDistrict && matchesRating && matchesSearch;
   });
 
-  const avgSatisfaction = Math.round(centers.reduce((acc, c) => acc + c.trainee_satisfaction_score, 0) / (centers.length || 1));
+  const avgSatisfaction = Math.round(centers.reduce((acc, c) => acc + c.training_center_satisfaction_score, 0) / (centers.length || 1));
   const avgPlacement = Math.round(centers.reduce((acc, c) => acc + c.placement_rate, 0) / (centers.length || 1));
   const avgRetention = Math.round(centers.reduce((acc, c) => acc + c.retention_180_rate, 0) / (centers.length || 1));
   const totalAuditFlags = centers.reduce((acc, c) => acc + c.sentinel_flags_count, 0);
@@ -61,9 +61,9 @@ export default function OfficerCenterPerformancePage() {
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-md mb-2">
             <Award className="w-3.5 h-3.5" /> District Officer Analytics & Compliance (Role: Officer)
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Training Center Performance & Trainee Feedback Report</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900">Training Center Performance & Feedback Report</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Evaluating training centers based on trainee survey satisfaction, 180-day retention outcomes, and fraud audit flags.
+            Evaluating training centers based on survey satisfaction, 180-day retention outcomes, and fraud audit flags.
           </p>
         </div>
 
@@ -79,7 +79,7 @@ export default function OfficerCenterPerformancePage() {
             <Star className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-[11px] font-semibold text-slate-500 block">Avg Trainee Satisfaction</span>
+            <span className="text-[11px] font-semibold text-slate-500 block">Avg Satisfaction Score</span>
             <div className="text-2xl font-extrabold text-slate-900 font-mono">{avgSatisfaction}%</div>
             <span className="text-[10px] text-emerald-600 font-bold">Based on post-checkin surveys</span>
           </div>
@@ -166,7 +166,7 @@ export default function OfficerCenterPerformancePage() {
         </div>
       </div>
 
-      {/* Centers Directory & Trainee Reports Table */}
+      {/* Centers Directory & Feedback Reports Table */}
       <div className="space-y-4">
         {filteredCenters.map((center, index) => {
           const isTop = center.performance_rating === 'Top Performing';
@@ -204,15 +204,15 @@ export default function OfficerCenterPerformancePage() {
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      District: <strong className="text-slate-800">{center.district}</strong> • Sector: <strong className="text-slate-800">{center.sector}</strong> • Total Trainees: <strong className="text-slate-800">{center.total_trainees}</strong>
+                      District: <strong className="text-slate-800">{center.district}</strong> • Sector: <strong className="text-slate-800">{center.sector}</strong> • Total Enrolled: <strong className="text-slate-800">{center.total_training_centers}</strong>
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 text-xs font-mono">
                   <div className="text-right">
-                    <span className="text-[10px] text-slate-500 uppercase font-bold block">Trainee Satisfaction</span>
-                    <strong className="text-base text-purple-700 font-extrabold">{center.trainee_satisfaction_score}%</strong>
+                    <span className="text-[10px] text-slate-500 uppercase font-bold block">Satisfaction Score</span>
+                    <strong className="text-base text-purple-700 font-extrabold">{center.training_center_satisfaction_score}%</strong>
                   </div>
                   <div className="text-right border-l border-slate-200 pl-4">
                     <span className="text-[10px] text-slate-500 uppercase font-bold block">180d Retention</span>
@@ -225,19 +225,19 @@ export default function OfficerCenterPerformancePage() {
                 </div>
               </div>
 
-              {/* Trainee Feedback Report Summary */}
+              {/* Feedback Report Summary */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-800 flex items-center gap-1.5">
                     <MessageSquare className="w-4 h-4 text-indigo-600" />
-                    Trainee Feedback & Report Summary
+                    Training Center Feedback & Report Summary
                   </span>
                   <span className={`font-mono text-[11px] font-bold ${center.sentinel_flags_count > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                     Sentinel Anomaly Flags: {center.sentinel_flags_count}
                   </span>
                 </div>
                 <p className="text-slate-700 italic">
-                  "{center.trainee_feedback_summary}"
+                  "{center.training_center_feedback_summary}"
                 </p>
               </div>
             </div>

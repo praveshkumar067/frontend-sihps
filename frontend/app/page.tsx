@@ -13,7 +13,7 @@ export default function RootPage() {
     if (!isAuthenticated || !user) {
       router.push('/login');
     } else {
-      if (user.role === 'trainee') router.push('/trainee');
+      if (user.role === 'training-center') router.push('/training-center');
       else if (user.role === 'employer') router.push('/employer');
       else if (user.role === 'officer') router.push('/officer');
       else router.push('/login');

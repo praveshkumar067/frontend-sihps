@@ -5,6 +5,7 @@ import { EvidenceSubmission, EvidenceType } from '@/lib/types';
 import { Upload, FileText, CheckCircle2, Clock, XCircle, FilePlus } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/context/AuthContext';
+import { MOCK_TRAINING_CENTER } from '@/lib/mock-data';
 
 interface EvidenceUploadProps {
   submissions: EvidenceSubmission[];
@@ -13,16 +14,16 @@ interface EvidenceUploadProps {
 
 export const EvidenceUpload: React.FC<EvidenceUploadProps> = ({ submissions, onUploaded }) => {
   const { user } = useAuth();
-  const traineeType = user?.trainee_type || user?.traineeProfile?.trainee_type || 'formal';
+  const tcType = user?.training_center_type || user?.trainingCenterProfile?.training_center_type || 'formal';
 
-  const defaultType: EvidenceType = traineeType === 'informal' ? 'shopfront_photo' : 'pay_slip';
+  const defaultType: EvidenceType = tcType === 'informal' ? 'shopfront_photo' : 'pay_slip';
   const [evidenceType, setEvidenceType] = useState<EvidenceType>(defaultType);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
 
   useEffect(() => {
-    setEvidenceType(traineeType === 'informal' ? 'shopfront_photo' : 'pay_slip');
-  }, [traineeType]);
+    setEvidenceType(tcType === 'informal' ? 'shopfront_photo' : 'pay_slip');
+  }, [tcType]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -57,7 +58,7 @@ export const EvidenceUpload: React.FC<EvidenceUploadProps> = ({ submissions, onU
           <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Trust Verification</span>
           <h3 className="text-lg font-bold text-slate-900">Upload Supporting Evidence Document</h3>
           <p className="text-xs text-slate-600">
-            {traineeType === 'informal'
+            {tcType === 'informal'
               ? 'Upload shopfront photos, UPI QR proofs, or bank statements to elevate your Trust Tier.'
               : 'Upload pay slips, offer letters, or bank statements to elevate your Trust Tier.'}
           </p>
@@ -71,7 +72,7 @@ export const EvidenceUpload: React.FC<EvidenceUploadProps> = ({ submissions, onU
               onChange={(e) => setEvidenceType(e.target.value as EvidenceType)}
               className="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-blue-500 font-medium"
             >
-              {traineeType === 'formal' ? (
+              {tcType === 'formal' ? (
                 <>
                   <option value="pay_slip">📄 Salary Pay Slip</option>
                   <option value="offer_letter">📜 Signed Offer Letter</option>

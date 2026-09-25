@@ -4,20 +4,21 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
-import { Home, CalendarCheck, FileCheck, Wallet, Gift } from 'lucide-react';
+import { Home, CalendarCheck, FileCheck, Wallet, Gift, Send } from 'lucide-react';
 
-export const TraineeNav: React.FC = () => {
+export const TrainingCenterNav: React.FC = () => {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  const traineeType = user?.trainee_type || user?.traineeProfile?.trainee_type || 'formal';
+  const tcType = user?.training_center_type || user?.trainingCenterProfile?.training_center_type || 'formal';
 
   const navItems = [
-    { label: 'Home', href: '/trainee', icon: Home },
-    { label: 'Check-ins', href: '/trainee/checkins', icon: CalendarCheck },
-    { label: 'Evidence', href: '/trainee/evidence', icon: FileCheck },
-    ...(traineeType === 'informal' ? [{ label: 'Income', href: '/trainee/income', icon: Wallet }] : []),
-    { label: 'Rewards', href: '/trainee/rewards', icon: Gift },
+    { label: 'Home', href: '/training-center', icon: Home },
+    { label: 'Invites', href: '/training-center/invites', icon: Send },
+    { label: 'Check-ins', href: '/training-center/checkins', icon: CalendarCheck },
+    { label: 'Evidence', href: '/training-center/evidence', icon: FileCheck },
+    ...(tcType === 'informal' ? [{ label: 'Income', href: '/training-center/income', icon: Wallet }] : []),
+    { label: 'Rewards', href: '/training-center/rewards', icon: Gift },
   ];
 
   return (

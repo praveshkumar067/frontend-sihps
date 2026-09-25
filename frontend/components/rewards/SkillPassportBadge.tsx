@@ -1,18 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { TraineeProfile } from '@/lib/types';
+import { TrainingCenterProfile } from '@/lib/types';
 import { Award, ShieldCheck, Share2, QrCode, ExternalLink, X, CheckCircle2 } from 'lucide-react';
 
 interface SkillPassportBadgeProps {
-  trainee: TraineeProfile;
+  trainingCenter: TrainingCenterProfile;
 }
 
-export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainee }) => {
+export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainingCenter }) => {
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
-  const shareUrl = `https://livelihood.gov.in/verify/passport/${trainee.trainee_id}`;
+  const shareUrl = `https://livelihood.gov.in/verify/passport/${trainingCenter.training_center_id}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareUrl);
@@ -53,11 +53,11 @@ export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainee 
         <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
-              <h3 className="text-base font-bold text-slate-900">{trainee.full_name}</h3>
-              <p className="text-xs text-slate-500 font-mono">Trainee ID: {trainee.trainee_id} • District: {trainee.district}</p>
+              <h3 className="text-base font-bold text-slate-900">{trainingCenter.full_name}</h3>
+              <p className="text-xs text-slate-500 font-mono">Training Center ID: {trainingCenter.training_center_id} • District: {trainingCenter.district}</p>
             </div>
             <div className="text-right">
-              <span className="text-xs font-bold text-emerald-700 font-mono">Trust Tier {trainee.trust_tier}</span>
+              <span className="text-xs font-bold text-emerald-700 font-mono">Trust Tier {trainingCenter.trust_tier}</span>
               <p className="text-[10px] text-slate-500">Issued by Maharashtra State Skill Development Society (MSSDS)</p>
             </div>
           </div>
@@ -65,17 +65,17 @@ export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainee 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div className="p-3 rounded-xl bg-white border border-slate-200">
               <span className="text-slate-500 text-[10px] font-medium uppercase tracking-wider block">Certified Sector</span>
-              <strong className="text-slate-900">{trainee.sector}</strong>
+              <strong className="text-slate-900">{trainingCenter.sector}</strong>
             </div>
 
             <div className="p-3 rounded-xl bg-white border border-slate-200">
               <span className="text-slate-500 text-[10px] font-medium uppercase tracking-wider block">Completion Date</span>
-              <strong className="text-slate-900">{trainee.completion_date}</strong>
+              <strong className="text-slate-900">{trainingCenter.completion_date}</strong>
             </div>
 
             <div className="p-3 rounded-xl bg-white border border-slate-200">
               <span className="text-slate-500 text-[10px] font-medium uppercase tracking-wider block">Training Institute</span>
-              <strong className="text-slate-900 truncate block">{trainee.training_center}</strong>
+              <strong className="text-slate-900 truncate block">{trainingCenter.training_center}</strong>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export const SkillPassportBadge: React.FC<SkillPassportBadgeProps> = ({ trainee 
             <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" /> Tamper-proof Cryptographic Verification Active
             </span>
-            <span className="font-mono text-slate-500">VID: {trainee.vid.slice(0, 4)}-XXXX-XXXX</span>
+            <span className="font-mono text-slate-500">VID: {trainingCenter.vid.slice(0, 4)}-XXXX-XXXX</span>
           </div>
         </div>
       </div>

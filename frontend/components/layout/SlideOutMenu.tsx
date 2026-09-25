@@ -21,7 +21,8 @@ import {
   ShieldCheck,
   MapPin,
   Award,
-  Users
+  Users,
+  Send
 } from 'lucide-react';
 
 interface SlideOutMenuProps {
@@ -35,8 +36,8 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
 
   if (!isOpen) return null;
 
-  const role = user?.role || 'trainee';
-  const traineeType = user?.trainee_type || user?.traineeProfile?.trainee_type || 'formal';
+  const role = user?.role || 'training-center';
+  const tcType = user?.training_center_type || user?.trainingCenterProfile?.training_center_type || 'formal';
 
   const handleLogout = () => {
     logout();
@@ -57,12 +58,12 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
             <ShieldCheck className="w-5 h-5 text-blue-600" />
             <div>
               <h2 className="text-sm font-bold text-slate-900">
-                {role === 'trainee' && `${traineeType === 'formal' ? 'Formal' : 'Informal'} Trainee Menu`}
+                {role === 'training-center' && `${tcType === 'formal' ? 'Formal' : 'Informal'} Training Center Menu`}
                 {role === 'employer' && 'Employer Menu'}
                 {role === 'officer' && 'District Officer Menu'}
               </h2>
               <span className="text-[10px] text-slate-500 font-mono capitalize">
-                Authenticated Role: {role} {role === 'trainee' ? `(${traineeType})` : ''}
+                Authenticated Role: {role} {role === 'training-center' ? `(${tcType})` : ''}
               </span>
             </div>
           </div>
@@ -76,27 +77,39 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
 
         {/* Dynamic Role-Filtered Navigation */}
         <div className="p-4 space-y-6 flex-1 text-xs">
-          {/* TRAINEE ROLE MENU */}
-          {role === 'trainee' && (
+          {/* TRAINING CENTER ROLE MENU */}
+          {role === 'training-center' && (
             <div className="space-y-2">
               <h3 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                Trainee Navigation ({traineeType.toUpperCase()})
+                Training Center Navigation ({tcType.toUpperCase()})
               </h3>
               <div className="space-y-1">
                 <Link
-                  href="/trainee"
+                  href="/training-center"
                   onClick={onClose}
                   className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
                     <UserCheck className="w-4 h-4 text-emerald-600" />
-                    <span>Trainee Home Dashboard</span>
+                    <span>Training Center Home Dashboard</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                 </Link>
 
                 <Link
-                  href="/trainee/checkins"
+                  href="/training-center/invites"
+                  onClick={onClose}
+                  className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Send className="w-4 h-4 text-indigo-600" />
+                    <span>Send Invite & Link Management</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                </Link>
+
+                <Link
+                  href="/training-center/checkins"
                   onClick={onClose}
                   className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
                 >
@@ -108,7 +121,7 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
                 </Link>
 
                 <Link
-                  href="/trainee/evidence"
+                  href="/training-center/evidence"
                   onClick={onClose}
                   className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
                 >
@@ -119,10 +132,10 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                 </Link>
 
-                {/* Hide LivelihoodLens Informal Income for Formal Trainees */}
-                {traineeType === 'informal' && (
+                {/* Hide LivelihoodLens Informal Income for Formal Training Centers */}
+                {tcType === 'informal' && (
                   <Link
-                    href="/trainee/income"
+                    href="/training-center/income"
                     onClick={onClose}
                     className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
                   >
@@ -135,7 +148,7 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
                 )}
 
                 <Link
-                  href="/trainee/rewards"
+                  href="/training-center/rewards"
                   onClick={onClose}
                   className="flex items-center justify-between p-2.5 rounded-lg text-slate-800 hover:bg-slate-100 font-semibold transition-colors"
                 >
@@ -175,7 +188,7 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
                 >
                   <div className="flex items-center gap-2.5">
                     <Users className="w-4 h-4 text-emerald-600" />
-                    <span>Trainee Skill Match</span>
+                    <span>Training Center Skill Match</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                 </Link>
@@ -277,4 +290,3 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
     </div>
   );
 };
-

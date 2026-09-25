@@ -15,7 +15,8 @@
 
 - [Overview](#-overview)
 - [Key Modules & Features](#-key-modules--features)
-  - [🎓 Trainee Portal](#-trainee-portal)
+  - [🏢 Training Center Portal](#-training-center-portal)
+  - [✉️ Send Invite & Onboarding Link](#%EF%B8%8F-send-invite--onboarding-link)
   - [🏢 Employer Portal](#-employer-portal)
   - [👮 Officer Portal](#-officer-portal)
   - [🤖 SentinelAI Engine](#-sentinelai-engine)
@@ -36,24 +37,31 @@ The **Lifelong Livelihood Support Platform** is an end-to-end outcome-based trac
 
 ### Core Objectives
 1. **Long-Term Outcome Verification**: Continuous post-placement verification at 30, 90, 180, and 365 days.
-2. **SentinelAI Anomaly Detection**: Automated detection of ghost trainees, fraudulent salary slips, duplicate proof submissions, and center collusion.
-3. **Verified Beneficiary Incentives**: Direct Benefit Transfer (DBT) milestone rewards unlocked as trainees build trust-tier progression.
+2. **SentinelAI Anomaly Detection**: Automated detection of ghost training centers, fraudulent salary slips, duplicate proof submissions, and center collusion.
+3. **Verified Beneficiary Incentives**: Direct Benefit Transfer (DBT) milestone rewards unlocked as training centers build trust-tier progression.
 4. **Data-Driven Policy & Skill Bridge**: Sector-wise gap analysis and training center performance auditing for government decision-makers.
 
 ---
 
 ## 🚀 Key Modules & Features
 
-### 🎓 Trainee Portal (`/trainee`)
+### 🏢 Training Center Portal (`/training-center`)
 - **Dashboard & Income Tracking**: Real-time visualization of monthly earnings progression and verified employment status.
-- **Milestone Check-ins (`/trainee/checkins`)**: Interactive outcome reporting at Day 30, 90, 180, and 365 post-training.
-- **Multi-Modal Evidence Upload (`/trainee/evidence`)**: Submission of salary slips, employer certificates, self-declarations, and bank statements.
-- **Rewards & Trust Tier System (`/trainee/rewards`)**: Progress from **Tier 1 (Unverified)** to **Tier 3 (Gold Verified)** with associated incentive payouts and trust badges.
+- **Milestone Check-ins (`/training-center/checkins`)**: Interactive outcome reporting at Day 30, 90, 180, and 365 post-training.
+- **Multi-Modal Evidence Upload (`/training-center/evidence`)**: Submission of salary slips, employer certificates, self-declarations, and bank statements.
+- **Rewards & Trust Tier System (`/training-center/rewards`)**: Progress from **Tier 1 (Unverified)** to **Tier 3 (Gold Verified)** with associated incentive payouts and trust badges.
+
+### ✉️ Send Invite & Onboarding Link (`/training-center/invites` & `/invite/[token]`)
+- **Send Invite Management (`/training-center/invites`)**: Training Center staff can generate unique, expiring invite links with custom recipient messages.
+- **One-Click WhatsApp Sending**: Integrated `wa.me` button to directly share pre-filled registration invitation messages via WhatsApp/SMS/Email.
+- **Public Recipient Onboarding (`/invite/[token]`)**: Recipients open the unique token link to complete registration on their own, with name pre-filled and **no login required**.
+- **Token Validation & Lifecycle**: Tokens automatically expire after 7 days; used or expired links show friendly error messages preventing duplicate submission.
+- **Invite Status Dashboard**: Live tracking of invite status (`sent`, `opened`, `completed`, `expired`) with resend and revoke capabilities.
 
 ### 🏢 Employer Portal (`/employer`)
 - **Talent Discovery (`/employer/candidates`)**: Search and filter candidate pool by district, sector, skill set, and trust tier rating.
 - **Geographic Placement Heatmap (`/employer/heatmap`)**: Interactive visualization of regional talent concentration and job market demand.
-- **Trainee Feedback & Verification (`/employer/feedback`)**: Direct employer feedback and workplace retention verification mechanism.
+- **Training Center Feedback & Verification (`/employer/feedback`)**: Direct employer feedback and workplace retention verification mechanism.
 
 ### 👮 Officer Portal (`/officer`)
 - **District Analytics (`/officer/analytics`)**: Macro-level placement rates, average wage growth, and retention metrics across districts.
@@ -86,24 +94,27 @@ The **Lifelong Livelihood Support Platform** is an end-to-end outcome-based trac
 ```mermaid
 graph TD
     User([User Access]) --> AuthGuard{Authenticated?}
-    AuthGuard -->|No| Login[Login / Register Page]
+    AuthGuard -->|No| PublicRoute{Public Invite Link?}
+    PublicRoute -->|Yes| RecipientOnboarding[Public Recipient Onboarding /invite/:token]
+    PublicRoute -->|No| Login[Login / Register Page]
     AuthGuard -->|Yes| RoleRouter{User Role?}
     
-    RoleRouter -->|Trainee| TraineeNav[Trainee Portal]
+    RoleRouter -->|Training Center| TCNav[Training Center Portal]
     RoleRouter -->|Employer| EmployerNav[Employer Portal]
     RoleRouter -->|Officer| OfficerNav[Officer Portal]
     
-    subgraph Trainee Module
-        TraineeNav --> T1[Check-ins 30/90/180/365 Days]
-        TraineeNav --> T2[Evidence Proof Submission]
-        TraineeNav --> T3[Income Tracking Dashboard]
-        TraineeNav --> T4[Rewards & Trust Tier Progression]
+    subgraph Training Center Module
+        TCNav --> T1[Check-ins 30/90/180/365 Days]
+        TCNav --> T2[Evidence Proof Submission]
+        TCNav --> T3[Income Tracking Dashboard]
+        TCNav --> T4[Rewards & Trust Tier Progression]
+        TCNav --> T5[Send Invite & Link Management]
     end
     
     subgraph Employer Module
         EmployerNav --> E1[Candidate Discovery & Filter]
         EmployerNav --> E2[Geographic Placement Heatmap]
-        EmployerNav --> E3[Trainee Retention Feedback]
+        EmployerNav --> E3[Training Center Feedback]
     end
     
     subgraph Officer & SentinelAI Module
@@ -128,20 +139,24 @@ sih ps/
 │   │   ├── layout.tsx               # Root layout (AuthProvider + RoleProvider)
 │   │   ├── page.tsx                 # Landing page & role-based redirect
 │   │   ├── login/                   # User authentication & role switch
-│   │   ├── register/                # Trainee / Employer onboarding
-│   │   ├── trainee/                 # Trainee portal routes
-│   │   │   ├── checkins/            #   └── Milestone check-in workflow
-│   │   │   ├── evidence/            #   └── Proof document upload & status
-│   │   │   ├── income/              #   └── Monthly income progression
+│   │   ├── register/                # Training Center / Employer onboarding
+│   │   ├── invite/[token]/          # Public recipient invite registration (no login)
+│   │   ├── api/                     # Backend API handlers
+│   │   │   └── invites/             #   ├── /api/invites & /api/invites/[token]
+│   │   ├── training-center/         # Training Center portal routes
+│   │   │   ├── checkins/            #   ├── Milestone check-in workflow
+│   │   │   ├── evidence/            #   ├── Proof document upload & status
+│   │   │   ├── income/              #   ├── Monthly income progression
+│   │   │   ├── invites/             #   ├── Send Invite & status dashboard
 │   │   │   └── rewards/             #   └── DBT rewards & trust tier status
 │   │   ├── employer/                # Employer portal routes
-│   │   │   ├── candidates/          #   └── Candidate pool & skill filter
-│   │   │   ├── feedback/            #   └── Performance feedback submission
+│   │   │   ├── candidates/          #   ├── Candidate pool & skill filter
+│   │   │   ├── feedback/            #   ├── Performance feedback submission
 │   │   │   └── heatmap/             #   └── Talent regional distribution
 │   │   └── officer/                 # Officer portal routes
-│   │       ├── analytics/           #   └── District level placement analytics
-│   │       ├── center-performance/  #   └── Training center audit scorecards
-│   │       ├── sentinel/            #   └── SentinelAI verification queue
+│   │       ├── analytics/           #   ├── District level placement analytics
+│   │       ├── center-performance/  #   ├── Training center audit scorecards
+│   │       ├── sentinel/            #   ├── SentinelAI verification queue
 │   │       └── skill-bridge/        #   └── Industry skill gap matrix
 │   ├── components/                  # UI Components by feature area
 │   │   ├── auth/                    #   Login/register forms & role badges
@@ -153,9 +168,9 @@ sih ps/
 │   │   ├── provider/                #   Context wrapper components
 │   │   ├── rewards/                 #   Tier badges & payout history
 │   │   ├── sentinel/                #   Anomaly resolution modals & logs
-│   │   └── trainee/                 #   Trainee dashboard metrics
+│   │   └── training-center/         #   Training Center dashboard metrics
 │   ├── lib/                         # Application logic & mock data
-│   │   ├── api/                     # Mock API client services
+│   │   ├── api/                     # API client services & invite handlers
 │   │   ├── context/                 # AuthContext & RoleContext definitions
 │   │   ├── types/                   # TypeScript interfaces & types
 │   │   └── mock-data.ts             # Comprehensive dataset for simulation
@@ -196,7 +211,6 @@ sih ps/
    ```bash
    npm run dev
    ```
-   > *Note for Windows PowerShell*: If script execution is restricted, run via CMD or use: `cmd /c "npm run dev"`.
 
 5. **Access Application**:
    Open browser at [http://localhost:3000](http://localhost:3000).
@@ -220,8 +234,8 @@ Run these commands inside the `frontend/` directory:
 
 | User Role | Default Route | Primary Responsibilities & Access |
 | :--- | :--- | :--- |
-| 🎓 **Trainee** | `/trainee` | Submit milestone check-ins, upload salary/employment evidence, track income growth, unlock trust tier badges, receive DBT rewards. |
-| 🏢 **Employer** | `/employer` | Search verified talent pool, filter candidates by skill/district, inspect candidate trust scores, view regional talent heatmaps, provide trainee feedback. |
+| 🏢 **Training Center** | `/training-center` | Send registration links via WhatsApp/SMS/Email (`/training-center/invites`), submit milestone check-ins, upload salary/employment evidence, track income growth, unlock trust tier badges, receive DBT rewards. |
+| 🏢 **Employer** | `/employer` | Search verified talent pool, filter candidates by skill/district, inspect candidate trust scores, view regional talent heatmaps, provide feedback. |
 | 👮 **Government Officer** | `/officer` | Review district-wide placement analytics, audit training centers, resolve SentinelAI fraud alerts, analyze skill gaps between industry demand and training supply. |
 
 ---
@@ -239,4 +253,3 @@ Run these commands inside the `frontend/` directory:
 <p align="center">
   Developed with ❤️ for <strong>Smart India Hackathon</strong> — PS 26135
 </p>
-

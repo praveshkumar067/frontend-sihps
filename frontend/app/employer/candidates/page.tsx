@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
-import { CandidateTrainee } from '@/lib/types';
+import { CandidateTrainingCenter } from '@/lib/types';
 import {
   Building2,
   Users,
@@ -36,7 +36,7 @@ const PRESET_SKILLS = [
 export default function EmployerCandidatesPage() {
   const [selectedSkills, setSelectedSkills] = useState<string[]>(['Micro-soldering', 'Quality Control']);
   const [districtFilter, setDistrictFilter] = useState<string>('All');
-  const [candidates, setCandidates] = useState<CandidateTrainee[]>([]);
+  const [candidates, setCandidates] = useState<CandidateTrainingCenter[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [contactedId, setContactedId] = useState<string | null>(null);
 
@@ -81,9 +81,9 @@ export default function EmployerCandidatesPage() {
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md mb-2">
             <Building2 className="w-3.5 h-3.5" /> SkillBridge Employer Module (Role: Employer)
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Skill-Matched Trainee Talent Discovery</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900">Skill-Matched Training Center Talent Discovery</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Specify your required job skills to instantly search verified trainees trained in Maharashtra government centers.
+            Specify your required job skills to instantly search verified training centers trained in Maharashtra government centers.
           </p>
         </div>
 
@@ -155,17 +155,17 @@ export default function EmployerCandidatesPage() {
               className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow flex items-center gap-2 transition-all"
             >
               <Search className="w-4 h-4 text-emerald-400" />
-              {loading ? 'Searching...' : 'Find Matching Trainees'}
+              {loading ? 'Searching...' : 'Find Matching Training Centers'}
             </button>
           </div>
         </form>
       </div>
 
-      {/* Trainees List Grid */}
+      {/* Training Centers List Grid */}
       <div className="space-y-4">
         <h3 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
           <Users className="w-5 h-5 text-emerald-600" />
-          Verified Trainee Talent Pool ({filteredCandidates.length})
+          Verified Training Center Talent Pool ({filteredCandidates.length})
         </h3>
 
         {filteredCandidates.length === 0 ? (
@@ -187,11 +187,11 @@ export default function EmployerCandidatesPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <h4 className="text-base font-extrabold text-slate-900">{cand.name}</h4>
                         <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded border ${
-                          cand.trainee_type === 'formal'
+                          cand.training_center_type === 'formal'
                             ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
                             : 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         }`}>
-                          {cand.trainee_type}
+                          {cand.training_center_type}
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-0.5">
@@ -244,7 +244,7 @@ export default function EmployerCandidatesPage() {
                         onClick={() => setContactedId(cand.id)}
                         className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl flex items-center gap-1.5 transition-colors"
                       >
-                        <Phone className="w-3.5 h-3.5" /> Contact Trainee
+                        <Phone className="w-3.5 h-3.5" /> Contact Training Center
                       </button>
                     )}
                   </div>

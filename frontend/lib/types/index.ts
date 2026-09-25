@@ -1,5 +1,5 @@
-export type Role = 'trainee' | 'employer' | 'officer' | 'provider';
-export type TraineeType = 'formal' | 'informal';
+export type Role = 'training-center' | 'employer' | 'officer' | 'provider';
+export type TrainingCenterType = 'formal' | 'informal';
 
 export interface UserSession {
   id: string;
@@ -11,11 +11,12 @@ export interface UserSession {
   district?: string;
   employer_id?: string;
   badge_id?: string;
-  trainee_type?: TraineeType;
+  training_center_type?: TrainingCenterType;
+  trainingCenterProfile?: TrainingCenterProfile;
 }
 
-export interface TraineeProfile {
-  trainee_id: string;
+export interface TrainingCenterProfile {
+  training_center_id: string;
   vid: string;
   full_name: string;
   phone: string;
@@ -26,14 +27,14 @@ export interface TraineeProfile {
   consent_given: boolean;
   trust_tier: number; // 0 to 5
   verification_status: 'pending' | 'verified' | 'rejected';
-  trainee_type?: TraineeType;
+  training_center_type?: TrainingCenterType;
 }
 
 export type EmploymentStatus = 'employed' | 'self-employed' | 'unemployed' | 'further-training';
 
 export interface CheckInOutcome {
   id: string;
-  trainee_id: string;
+  training_center_id: string;
   milestone_days: 30 | 90 | 180 | 365;
   status: 'done' | 'pending' | 'overdue';
   checkin_date?: string;
@@ -56,7 +57,7 @@ export type EvidenceType = 'pay_slip' | 'offer_letter' | 'bank_statement' | 'sho
 
 export interface EvidenceSubmission {
   id: string;
-  trainee_id: string;
+  training_center_id: string;
   evidence_type: EvidenceType;
   file_name: string;
   upload_timestamp: string;
@@ -67,7 +68,7 @@ export interface EvidenceSubmission {
 
 export interface EmployerFeedback {
   id: string;
-  trainee_id?: string;
+  training_center_id?: string;
   employer_name: string;
   performance_rating: 'Excellent' | 'Good' | 'Satisfactory' | 'Needs Improvement';
   skill_gaps: string[];
@@ -84,11 +85,11 @@ export interface SkillGapData {
 
 export interface SentinelFlaggedClaim {
   claim_id: string;
-  trainee_id: string;
-  trainee_name: string;
+  training_center_id: string;
+  training_center_name: string;
   district: string;
   training_center: string;
-  flag_reason: string; // e.g. "Duplicate salary receipt hash", "IP cluster anomaly", "Rapid outcome completion"
+  flag_reason: string;
   risk_score: number; // 0 - 100
   evidence_tier: number;
   centre_flag_status: 'normal' | 'suspicious' | 'under_audit';
@@ -100,9 +101,9 @@ export interface SentinelFlaggedClaim {
 
 export interface LivelihoodLensReport {
   id: string;
-  trainee_id: string;
+  training_center_id: string;
   business_type: string;
-  monthly_revenue_band: string; // e.g. '₹0 - ₹5,000', '₹5,000 - ₹10,000', etc.
+  monthly_revenue_band: string;
   verification_method: 'geotagged_photo' | 'upi_qr';
   photo_url?: string;
   upi_merchant_id?: string;
@@ -116,7 +117,7 @@ export interface IncentiveItem {
   incentive_type: 'skill_passport' | 'scheme_priority' | 'micro_voucher';
   title: string;
   description: string;
-  trigger_event: string; // e.g. '30-Day Check-in', '90-Day Verification', 'Tier 3 Trust'
+  trigger_event: string;
   status: 'locked' | 'unlocked' | 'claimed';
   redemption_code?: string;
   unlocked_date?: string;
@@ -127,21 +128,21 @@ export interface ProviderStats {
   provider_name: string;
   district: string;
   total_candidates: number;
-  placement_rate: number; // %
-  retention_30_rate: number; // %
-  retention_90_rate: number; // %
-  retention_180_rate: number; // %
-  retention_365_rate: number; // %
+  placement_rate: number;
+  retention_30_rate: number;
+  retention_90_rate: number;
+  retention_180_rate: number;
+  retention_365_rate: number;
   average_starting_income_inr: number;
   average_current_income_inr: number;
-  pqr_score: number; // Provider Quality Rating 0 - 100
+  pqr_score: number;
   rank: number;
 }
 
-export interface CandidateTrainee {
+export interface CandidateTrainingCenter {
   id: string;
   name: string;
-  trainee_type: TraineeType;
+  training_center_type: TrainingCenterType;
   district: string;
   sector: string;
   training_center: string;
@@ -158,13 +159,24 @@ export interface TrainingCenterPerformance {
   center_name: string;
   district: string;
   sector: string;
-  total_trainees: number;
-  trainee_satisfaction_score: number; // 0 to 100
+  total_training_centers: number;
+  training_center_satisfaction_score: number; // 0 to 100
   placement_rate: number; // %
   retention_180_rate: number; // %
   avg_starting_salary_inr: number;
   sentinel_flags_count: number;
   performance_rating: 'Top Performing' | 'High Retention' | 'Satisfactory' | 'Needs Review';
-  trainee_feedback_summary: string;
+  training_center_feedback_summary: string;
 }
 
+export interface InviteRecord {
+  id: string;
+  token: string;
+  recipientName: string;
+  recipientPhone?: string;
+  recipientEmail?: string;
+  customMessage?: string;
+  status: 'sent' | 'opened' | 'completed' | 'expired';
+  createdAt: string;
+  expiresAt: string;
+}

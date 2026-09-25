@@ -55,7 +55,7 @@ export const EmployerFeedbackForm: React.FC<{ onSubmitted?: () => void }> = ({ o
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md">
           <Building2 className="w-3.5 h-3.5" /> SkillBridge Employer Feedback
         </div>
-        <h3 className="text-xl font-extrabold text-slate-900">Trainee Performance Rating & Skill Gap Feedback</h3>
+        <h3 className="text-xl font-extrabold text-slate-900">Training Center Performance Rating & Skill Gap Feedback</h3>
         <p className="text-xs text-slate-500">
           Simulating WhatsApp interactive quick-buttons for employer performance rating and skill gap reporting.
         </p>
@@ -66,7 +66,7 @@ export const EmployerFeedbackForm: React.FC<{ onSubmitted?: () => void }> = ({ o
           <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
           <h4 className="text-lg font-bold text-slate-900">Feedback Successfully Recorded!</h4>
           <p className="text-xs text-slate-600">
-            Thank you for validating trainee outcomes. Your feedback updates the District Skill Gap Heatmap.
+            Thank you for validating training center outcomes. Your feedback updates the District Skill Gap Heatmap.
           </p>
           <button
             onClick={() => setSubmitted(false)}
@@ -90,7 +90,7 @@ export const EmployerFeedbackForm: React.FC<{ onSubmitted?: () => void }> = ({ o
 
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-700">
-              Trainee Performance Rating (Interactive Buttons)
+              Training Center Performance Rating (Interactive Buttons)
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {(['Excellent', 'Good', 'Satisfactory', 'Needs Improvement'] as const).map((r) => (

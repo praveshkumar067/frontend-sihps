@@ -1,23 +1,23 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Role, TraineeProfile, TraineeType } from '../types';
-import { MOCK_TRAINEE } from '../mock-data';
+import { Role, TrainingCenterProfile, TrainingCenterType } from '../types';
+import { MOCK_TRAINING_CENTER } from '../mock-data';
 
 export interface UserSession {
   role: Role;
   id: string;
   name: string;
   token: string;
-  traineeProfile?: TraineeProfile;
-  trainee_type?: TraineeType;
+  trainingCenterProfile?: TrainingCenterProfile;
+  training_center_type?: TrainingCenterType;
 }
 
-export interface TraineeRegData {
+export interface TrainingCenterRegData {
   fullName: string;
   vid: string;
   phone?: string;
-  traineeType: TraineeType;
+  trainingCenterType: TrainingCenterType;
   skillTrade?: string;
   tcId?: string;
   stateDistrict?: string;
@@ -41,8 +41,8 @@ export interface OfficerRegData {
 interface AuthContextType {
   user: UserSession | null;
   isAuthenticated: boolean;
-  loginAsRole: (role: Role, credentials?: { vid?: string; name?: string; traineeType?: TraineeType }) => Promise<boolean>;
-  registerAsRole: (role: Role, data: TraineeRegData | EmployerRegData | OfficerRegData) => Promise<boolean>;
+  loginAsRole: (role: Role, credentials?: { vid?: string; name?: string; trainingCenterType?: TrainingCenterType }) => Promise<boolean>;
+  registerAsRole: (role: Role, data: TrainingCenterRegData | EmployerRegData | OfficerRegData) => Promise<boolean>;
   giveConsent: () => void;
   logout: () => void;
   updateTrustTier: (tier: number) => void;
@@ -59,7 +59,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const saved = localStorage.getItem('livelihood_user_session');
     if (saved) {
       try {
-        setUser(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Migration check if old session had role 'trainee'
+        if (parsed.role === 'trainee') {
+          parsed.role = 'training-center';
+          parsed.training_center_type = parsed.trainee_type || 'formal';
+          parsed.trainingCenterProfile = parsed.traineeProfile;
+        }
+        setUser(parsed);
       } catch (e) {
         setUser(null);
       }
@@ -71,26 +78,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginAsRole = async (
     role: Role,
-    credentials?: { vid?: string; name?: string; traineeType?: TraineeType }
+    credentials?: { vid?: string; name?: string; trainingCenterType?: TrainingCenterType }
   ): Promise<boolean> => {
     let session: UserSession;
 
-    if (role === 'trainee') {
+    if (role === 'training-center') {
       const cleanVid = credentials?.vid ? credentials.vid.replace(/\D/g, '') : '982344128801';
-      const tType: TraineeType = credentials?.traineeType || 'formal';
+      const tcType: TrainingCenterType = credentials?.trainingCenterType || 'formal';
       session = {
-        role: 'trainee',
-        id: tType === 'formal' ? 'TR-884920' : 'TR-664210',
-        name: credentials?.name || (tType === 'formal' ? MOCK_TRAINEE.full_name : 'Vikram Singh'),
-        token: `mock-jwt-token-trainee-${Date.now()}`,
-        trainee_type: tType,
-        traineeProfile: {
-          ...MOCK_TRAINEE,
-          full_name: credentials?.name || (tType === 'formal' ? MOCK_TRAINEE.full_name : 'Vikram Singh'),
-          trainee_id: tType === 'formal' ? 'TR-884920' : 'TR-664210',
+        role: 'training-center',
+        id: tcType === 'formal' ? 'TC-884920' : 'TC-664210',
+        name: credentials?.name || (tcType === 'formal' ? MOCK_TRAINING_CENTER.full_name : 'Vikram Singh'),
+        token: `mock-jwt-token-training-center-${Date.now()}`,
+        training_center_type: tcType,
+        trainingCenterProfile: {
+          ...MOCK_TRAINING_CENTER,
+          full_name: credentials?.name || (tcType === 'formal' ? MOCK_TRAINING_CENTER.full_name : 'Vikram Singh'),
+          training_center_id: tcType === 'formal' ? 'TC-884920' : 'TC-664210',
           vid: cleanVid,
           consent_given: true,
-          trainee_type: tType
+          training_center_type: tcType
         }
       };
     } else if (role === 'employer') {
@@ -117,31 +124,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const registerAsRole = async (
     role: Role,
-    data: TraineeRegData | EmployerRegData | OfficerRegData
+    data: TrainingCenterRegData | EmployerRegData | OfficerRegData
   ): Promise<boolean> => {
     let session: UserSession;
 
-    if (role === 'trainee') {
-      const tData = data as TraineeRegData;
-      const cleanVid = tData.vid ? tData.vid.replace(/\D/g, '') : '982344128801';
-      const traineeId = `TR-${Math.floor(100000 + Math.random() * 900000)}`;
+    if (role === 'training-center') {
+      const tcData = data as TrainingCenterRegData;
+      const cleanVid = tcData.vid ? tcData.vid.replace(/\D/g, '') : '982344128801';
+      const tcId = `TC-${Math.floor(100000 + Math.random() * 900000)}`;
       session = {
-        role: 'trainee',
-        id: traineeId,
-        name: tData.fullName,
-        token: `mock-jwt-token-trainee-reg-${Date.now()}`,
-        trainee_type: tData.traineeType,
-        traineeProfile: {
-          ...MOCK_TRAINEE,
-          full_name: tData.fullName,
-          trainee_id: traineeId,
+        role: 'training-center',
+        id: tcId,
+        name: tcData.fullName,
+        token: `mock-jwt-token-tc-reg-${Date.now()}`,
+        training_center_type: tcData.trainingCenterType,
+        trainingCenterProfile: {
+          ...MOCK_TRAINING_CENTER,
+          full_name: tcData.fullName,
+          training_center_id: tcId,
           vid: cleanVid,
           consent_given: true,
-          trainee_type: tData.traineeType,
-          sector: tData.skillTrade || MOCK_TRAINEE.sector,
-          training_center: tData.tcId || MOCK_TRAINEE.training_center,
-          district: tData.stateDistrict || MOCK_TRAINEE.district,
-          phone: tData.phone || MOCK_TRAINEE.phone
+          training_center_type: tcData.trainingCenterType,
+          sector: tcData.skillTrade || MOCK_TRAINING_CENTER.sector,
+          training_center: tcData.tcId || MOCK_TRAINING_CENTER.training_center,
+          district: tcData.stateDistrict || MOCK_TRAINING_CENTER.district,
+          phone: tcData.phone || MOCK_TRAINING_CENTER.phone
         }
       };
     } else if (role === 'employer') {
@@ -170,9 +177,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const giveConsent = () => {
-    if (user && user.traineeProfile) {
-      const updatedProfile = { ...user.traineeProfile, consent_given: true };
-      const updatedUser = { ...user, traineeProfile: updatedProfile };
+    if (user && user.trainingCenterProfile) {
+      const updatedProfile = { ...user.trainingCenterProfile, consent_given: true };
+      const updatedUser = { ...user, trainingCenterProfile: updatedProfile };
       setUser(updatedUser);
       localStorage.setItem('livelihood_user_session', JSON.stringify(updatedUser));
     }
@@ -184,9 +191,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateTrustTier = (tier: number) => {
-    if (user && user.traineeProfile) {
-      const updatedProfile = { ...user.traineeProfile, trust_tier: tier };
-      const updatedUser = { ...user, traineeProfile: updatedProfile };
+    if (user && user.trainingCenterProfile) {
+      const updatedProfile = { ...user.trainingCenterProfile, trust_tier: tier };
+      const updatedUser = { ...user, trainingCenterProfile: updatedProfile };
       setUser(updatedUser);
       localStorage.setItem('livelihood_user_session', JSON.stringify(updatedUser));
     }
@@ -216,4 +223,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

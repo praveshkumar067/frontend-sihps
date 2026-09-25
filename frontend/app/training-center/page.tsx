@@ -24,22 +24,24 @@ import {
   CheckCircle2,
   Clock,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Send,
+  Building2
 } from 'lucide-react';
 
-export default function TraineeHomePage() {
+export default function TrainingCenterHomePage() {
   const { user } = useAuth();
   const [checkins, setCheckins] = useState<CheckInOutcome[]>([]);
   const [selectedDistrict, setSelectedDistrict] = useState<string>('All');
   const [selectedMilestone, setSelectedMilestone] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const trainee = user?.traineeProfile;
+  const trainingCenter = user?.trainingCenterProfile;
 
   const loadData = async () => {
-    if (!trainee) return;
+    if (!trainingCenter) return;
     try {
-      const data = await api.getCheckIns(trainee.trainee_id);
+      const data = await api.getCheckIns(trainingCenter.training_center_id);
       setCheckins(data);
     } catch (err) {
       console.error(err);
@@ -50,7 +52,7 @@ export default function TraineeHomePage() {
     loadData();
   }, [user]);
 
-  if (!trainee) return null;
+  if (!trainingCenter) return null;
 
   const activeCheckin = checkins.find(c => c.status === 'pending') || checkins[0];
 
@@ -60,39 +62,64 @@ export default function TraineeHomePage() {
       <div className="dash-card p-6 bg-white border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-600/20 shrink-0">
-            <UserCheck className="w-8 h-8 stroke-[2.5]" />
+            <Building2 className="w-8 h-8 stroke-[2.5]" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
-                {trainee.sector}
+                {trainingCenter.sector}
               </span>
               <span className={`text-xs font-extrabold px-2 py-0.5 rounded border uppercase tracking-wider ${
-                (trainee.trainee_type || user?.trainee_type) === 'informal'
+                (trainingCenter.training_center_type || user?.training_center_type) === 'informal'
                   ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                   : 'bg-indigo-50 text-indigo-800 border-indigo-300'
               }`}>
-                {(trainee.trainee_type || user?.trainee_type) === 'informal' ? 'Informal Trainee' : 'Formal Trainee'}
+                {(trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? 'Informal Training Center' : 'Formal Training Center'}
               </span>
-              <span className="text-xs font-mono text-slate-500">ID: {trainee.trainee_id}</span>
+              <span className="text-xs font-mono text-slate-500">ID: {trainingCenter.training_center_id}</span>
             </div>
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
-              Welcome back, {trainee.full_name}!
+              Welcome back, {trainingCenter.full_name}!
             </h1>
             <p className="text-xs text-slate-500 mt-0.5">
-              District: <strong className="text-slate-700">{trainee.district}</strong> • Center: <strong className="text-slate-700">{trainee.training_center}</strong>
+              District: <strong className="text-slate-700">{trainingCenter.district}</strong> • Center: <strong className="text-slate-700">{trainingCenter.training_center}</strong>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap">
           <Link
-            href="/trainee/rewards"
+            href="/training-center/invites"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all"
+          >
+            <Send className="w-4 h-4" /> Send Invite Link
+          </Link>
+          <Link
+            href="/training-center/rewards"
             className="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all"
           >
             <Award className="w-4 h-4" /> View Skill Passport
           </Link>
         </div>
+      </div>
+
+      {/* Quick Invite Feature Callout Banner */}
+      <div className="dash-card p-5 bg-gradient-to-r from-indigo-900 to-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl shadow-lg border border-indigo-700/50">
+        <div className="space-y-1">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-300 bg-indigo-500/20 border border-indigo-400/30 px-2.5 py-0.5 rounded-full">
+            New Feature • Registration Onboarding
+          </span>
+          <h2 className="text-lg font-extrabold text-white">Can't fill out details yourself? Send a Registration Link!</h2>
+          <p className="text-xs text-indigo-200">
+            Generate expiring registration invite links and send directly via WhatsApp, Email, or SMS for instant candidate onboarding.
+          </p>
+        </div>
+        <Link
+          href="/training-center/invites"
+          className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-md shrink-0 flex items-center gap-2 transition-all"
+        >
+          <Send className="w-4 h-4" /> Send Invite Now <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
 
       {/* 5 Statistic Metric Cards Row */}
@@ -104,7 +131,7 @@ export default function TraineeHomePage() {
           </div>
           <div>
             <span className="text-[11px] font-semibold text-slate-500 block">Trust Tier</span>
-            <div className="text-xl font-extrabold text-slate-900">Tier {trainee.trust_tier} / 5</div>
+            <div className="text-xl font-extrabold text-slate-900">Tier {trainingCenter.trust_tier} / 5</div>
             <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-0.5">
               <TrendingUp className="w-3 h-3" /> Verified Status
             </span>
@@ -134,7 +161,7 @@ export default function TraineeHomePage() {
             <span className="text-[11px] font-semibold text-slate-500 block">Documents Uploaded</span>
             <div className="text-xl font-extrabold text-slate-900">2 Verified</div>
             <span className="text-[10px] text-emerald-600 font-bold">
-              {(trainee.trainee_type || user?.trainee_type) === 'informal' ? 'UPI QR & Shop Photo' : 'Pay Slip & Offer Letter'}
+              {(trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? 'UPI QR & Shop Photo' : 'Pay Slip & Offer Letter'}
             </span>
           </div>
         </div>
@@ -146,13 +173,13 @@ export default function TraineeHomePage() {
           </div>
           <div>
             <span className="text-[11px] font-semibold text-slate-500 block">
-              {(trainee.trainee_type || user?.trainee_type) === 'informal' ? 'Monthly Revenue' : 'Monthly Salary'}
+              {(trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? 'Monthly Revenue' : 'Monthly Salary'}
             </span>
             <div className="text-xl font-extrabold text-slate-900">
-              {(trainee.trainee_type || user?.trainee_type) === 'informal' ? '₹15,000–₹25k' : '₹18,500/mo'}
+              {(trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? '₹15,000–₹25k' : '₹18,500/mo'}
             </div>
             <span className="text-[10px] text-amber-700 font-bold">
-              {(trainee.trainee_type || user?.trainee_type) === 'informal' ? 'Self-Employed Micro-Biz' : 'Salaried Employment'}
+              {(trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? 'Self-Employed Micro-Biz' : 'Salaried Employment'}
             </span>
           </div>
         </div>
@@ -170,7 +197,7 @@ export default function TraineeHomePage() {
         </div>
       </div>
 
-      {/* Main Split Layout: Filter Sidebar (Left) + Padded Table View (Right) (Matching Screenshot 3 & 4) */}
+      {/* Main Split Layout: Filter Sidebar (Left) + Padded Table View (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Filter Sidebar */}
         <div className="dash-card p-5 space-y-4 h-fit bg-white">
@@ -258,7 +285,7 @@ export default function TraineeHomePage() {
             <NextCheckinCard checkin={activeCheckin} onSubmitted={loadData} />
           )}
 
-          {/* Enterprise Data Table (Matching Screenshot 3 & 4) */}
+          {/* Enterprise Data Table */}
           <div className="dash-card bg-white overflow-hidden space-y-4">
             <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
@@ -309,12 +336,12 @@ export default function TraineeHomePage() {
                       </td>
                       <td className="font-mono text-slate-600">{chk.checkin_date || chk.due_date}</td>
                       <td className="font-medium text-slate-800">
-                        {chk.outcome_path?.employer_name || chk.outcome_path?.business_type || ((trainee.trainee_type || user?.trainee_type) === 'informal' ? 'Micro Retail Enterprise' : 'Salaried Assembly Tech')}
+                        {chk.outcome_path?.employer_name || chk.outcome_path?.business_type || ((trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? 'Micro Retail Enterprise' : 'Salaried Assembly Tech')}
                       </td>
                       <td className="font-mono font-bold text-emerald-700">
                         {chk.outcome_path?.monthly_salary_inr 
                           ? `₹${chk.outcome_path.monthly_salary_inr.toLocaleString()}/mo` 
-                          : chk.outcome_path?.monthly_revenue_band || ((trainee.trainee_type || user?.trainee_type) === 'informal' ? '₹15,000–₹25k' : '₹18,500/mo')}
+                          : chk.outcome_path?.monthly_revenue_band || ((trainingCenter.training_center_type || user?.training_center_type) === 'informal' ? '₹15,000–₹25k' : '₹18,500/mo')}
                       </td>
                       <td>
                         <div className="flex items-center gap-2">
@@ -357,7 +384,7 @@ export default function TraineeHomePage() {
         </div>
       </div>
 
-      <TrustLevelBadge currentTier={trainee.trust_tier} verificationStatus={trainee.verification_status} />
+      <TrustLevelBadge currentTier={trainingCenter.trust_tier} verificationStatus={trainingCenter.verification_status} />
     </div>
   );
 }

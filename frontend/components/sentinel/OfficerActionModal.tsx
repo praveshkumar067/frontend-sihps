@@ -59,7 +59,7 @@ export const OfficerActionModal: React.FC<OfficerActionModalProps> = ({
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1.5">
           <div className="flex justify-between text-slate-800 font-mono">
             <span>Claim ID: {claim.claim_id}</span>
-            <span>Trainee: {claim.trainee_name}</span>
+            <span>Center: {claim.training_center_name}</span>
           </div>
           <p className="text-slate-600">Flag Reason: <strong className="text-rose-700">{claim.flag_reason}</strong></p>
         </div>
@@ -89,13 +89,7 @@ export const OfficerActionModal: React.FC<OfficerActionModalProps> = ({
             </button>
             <button
               type="submit"
-              className={`flex-1 py-2.5 font-bold text-xs rounded-xl shadow transition-all ${
-                actionType === 'approved'
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white'
-                  : actionType === 'rejected'
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white'
-                  : 'bg-slate-900 hover:bg-slate-800 text-white'
-              }`}
+              className="flex-1 py-2.5 font-bold text-xs rounded-xl shadow transition-all bg-slate-900 hover:bg-slate-800 text-white"
             >
               Confirm Action
             </button>

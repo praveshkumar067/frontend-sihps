@@ -48,7 +48,7 @@ export default function OfficerSentinelPage() {
     const matchesDistrict = districtFilter === 'All' || claim.district === districtFilter;
     const matchesStatus = statusFilter === 'All' || claim.status === statusFilter;
     const matchesSearch = claim.claim_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          claim.trainee_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          claim.training_center_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           claim.flag_reason.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesDistrict && matchesStatus && matchesSearch;
   });
@@ -81,7 +81,7 @@ export default function OfficerSentinelPage() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search claim ID, trainee name, or flag keyword..."
+            placeholder="Search claim ID, training center name, or flag keyword..."
             className="bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none w-full"
           />
         </div>
@@ -134,8 +134,8 @@ export default function OfficerSentinelPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-base font-bold text-slate-900 font-mono">{claim.claim_id}</h3>
-                      <span className="text-xs text-slate-500">• Trainee: <strong className="text-slate-800">{claim.trainee_name}</strong></span>
-                      <span className="text-xs font-mono text-indigo-700">({claim.trainee_id})</span>
+                      <span className="text-xs text-slate-500">• Training Center: <strong className="text-slate-800">{claim.training_center_name}</strong></span>
+                      <span className="text-xs font-mono text-indigo-700">({claim.training_center_id})</span>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
                       District: <strong className="text-slate-800">{claim.district}</strong> | Centre: <strong className="text-slate-800">{claim.training_center}</strong>

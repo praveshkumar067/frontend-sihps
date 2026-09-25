@@ -11,7 +11,7 @@ interface TrustLevelBadgeProps {
 const TIER_DESCRIPTIONS: Record<number, { title: string; desc: string; nextRequirement: string }> = {
   0: {
     title: 'Tier 0: Self-Declared',
-    desc: 'Basic trainee profile declared without supporting document proof.',
+    desc: 'Basic profile declared without supporting document proof.',
     nextRequirement: 'Upload an offer letter or job joining letter to reach Tier 1.'
   },
   1: {

@@ -1,17 +1,18 @@
 import {
-  TraineeProfile,
+  TrainingCenterProfile,
   CheckInOutcome,
   EvidenceSubmission,
   SkillGapData,
   SentinelFlaggedClaim,
   IncentiveItem,
   ProviderStats,
-  CandidateTrainee,
-  TrainingCenterPerformance
+  CandidateTrainingCenter,
+  TrainingCenterPerformance,
+  InviteRecord
 } from './types';
 
-export const MOCK_TRAINEE: TraineeProfile = {
-  trainee_id: 'TR-884920',
+export const MOCK_TRAINING_CENTER: TrainingCenterProfile = {
+  training_center_id: 'TC-884920',
   vid: '9823-4412-8801',
   full_name: 'Ananya Sharma',
   phone: '+91 98765 43210',
@@ -22,13 +23,13 @@ export const MOCK_TRAINEE: TraineeProfile = {
   consent_given: true,
   trust_tier: 3,
   verification_status: 'verified',
-  trainee_type: 'formal'
+  training_center_type: 'formal'
 };
 
 export const MOCK_CHECKINS: CheckInOutcome[] = [
   {
     id: 'chk-30',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     milestone_days: 30,
     status: 'done',
     checkin_date: '2026-04-15',
@@ -43,7 +44,7 @@ export const MOCK_CHECKINS: CheckInOutcome[] = [
   },
   {
     id: 'chk-90',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     milestone_days: 90,
     status: 'pending',
     due_date: '2026-06-15',
@@ -51,7 +52,7 @@ export const MOCK_CHECKINS: CheckInOutcome[] = [
   },
   {
     id: 'chk-180',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     milestone_days: 180,
     status: 'pending',
     due_date: '2026-09-15',
@@ -59,7 +60,7 @@ export const MOCK_CHECKINS: CheckInOutcome[] = [
   },
   {
     id: 'chk-365',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     milestone_days: 365,
     status: 'pending',
     due_date: '2027-03-15',
@@ -70,7 +71,7 @@ export const MOCK_CHECKINS: CheckInOutcome[] = [
 export const MOCK_EVIDENCE: EvidenceSubmission[] = [
   {
     id: 'ev-1',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     evidence_type: 'pay_slip',
     file_name: 'Apex_PaySlip_April2026.pdf',
     upload_timestamp: '2026-04-16 10:30 AM',
@@ -79,7 +80,7 @@ export const MOCK_EVIDENCE: EvidenceSubmission[] = [
   },
   {
     id: 'ev-2',
-    trainee_id: 'TR-884920',
+    training_center_id: 'TC-884920',
     evidence_type: 'offer_letter',
     file_name: 'Apex_OfferLetter_Signed.pdf',
     upload_timestamp: '2026-03-20 02:15 PM',
@@ -104,17 +105,17 @@ export const MOCK_SKILL_GAPS: SkillGapData[] = [
 export const MOCK_SENTINEL_CLAIMS: SentinelFlaggedClaim[] = [
   {
     claim_id: 'FLG-9921',
-    trainee_id: 'TR-77102',
-    trainee_name: 'Rahul Verma',
+    training_center_id: 'TC-77102',
+    training_center_name: 'Rahul Verma',
     district: 'Pune',
     training_center: 'Pune Skill Hub #2',
-    flag_reason: 'Duplicate salary slip hash across 4 distinct trainees',
+    flag_reason: 'Duplicate salary slip hash across 4 distinct training centers',
     risk_score: 92,
     evidence_tier: 1,
     centre_flag_status: 'under_audit',
     outcome_anomalies: [
       'Identical salary bank statement PDF checksums',
-      'All 4 trainees reported exact salary ₹24,500/mo on same day',
+      'All 4 training centers reported exact salary ₹24,500/mo on same day',
       'Employer GSTIN matches dissolved entity'
     ],
     submission_date: '2026-08-25',
@@ -122,8 +123,8 @@ export const MOCK_SENTINEL_CLAIMS: SentinelFlaggedClaim[] = [
   },
   {
     claim_id: 'FLG-9924',
-    trainee_id: 'TR-66381',
-    trainee_name: 'Pooja Kumari',
+    training_center_id: 'TC-66381',
+    training_center_name: 'Pooja Kumari',
     district: 'Nagpur',
     training_center: 'Nagpur Tech Vocational Center',
     flag_reason: 'Rapid completion anomaly (30 & 90 day outcomes submitted in 3 days)',
@@ -139,8 +140,8 @@ export const MOCK_SENTINEL_CLAIMS: SentinelFlaggedClaim[] = [
   },
   {
     claim_id: 'FLG-9930',
-    trainee_id: 'TR-55419',
-    trainee_name: 'Manish Kumar',
+    training_center_id: 'TC-55419',
+    training_center_name: 'Manish Kumar',
     district: 'Nashik',
     training_center: 'North Maharashtra Skill Academy',
     flag_reason: 'UPI Merchant QR mismatch with declared retail business',
@@ -159,7 +160,7 @@ export const MOCK_SENTINEL_CLAIMS: SentinelFlaggedClaim[] = [
 export const MOCK_INCENTIVES: IncentiveItem[] = [
   {
     id: 'inc-1',
-    candidate_id: 'TR-884920',
+    candidate_id: 'TC-884920',
     incentive_type: 'skill_passport',
     title: 'Verified Digital Skill Passport',
     description: 'Tamper-proof digital badge certifying completed outcome and Tier 3 verified employment.',
@@ -169,7 +170,7 @@ export const MOCK_INCENTIVES: IncentiveItem[] = [
   },
   {
     id: 'inc-2',
-    candidate_id: 'TR-884920',
+    candidate_id: 'TC-884920',
     incentive_type: 'scheme_priority',
     title: 'PM Mudra Loan Priority Access',
     description: 'Fast-track collateral-free loan processing up to ₹1,00,000 for self-employed/entrepreneurial growth.',
@@ -179,7 +180,7 @@ export const MOCK_INCENTIVES: IncentiveItem[] = [
   },
   {
     id: 'inc-3',
-    candidate_id: 'TR-884920',
+    candidate_id: 'TC-884920',
     incentive_type: 'micro_voucher',
     title: 'Advanced Skill-Up MicroVoucher (₹1,500)',
     description: 'Voucher code for advanced specialization course at partner centers.',
@@ -237,11 +238,11 @@ export const MOCK_PROVIDERS: ProviderStats[] = [
   }
 ];
 
-export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
+export const MOCK_CANDIDATE_TRAINING_CENTERS: CandidateTrainingCenter[] = [
   {
-    id: 'TR-884920',
+    id: 'TC-884920',
     name: 'Ananya Sharma',
-    trainee_type: 'formal',
+    training_center_type: 'formal',
     district: 'Pune',
     sector: 'Electronics & Hardware',
     training_center: 'Pune Skill Development Institute #4',
@@ -253,9 +254,9 @@ export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
     availability: 'Immediate'
   },
   {
-    id: 'TR-771092',
+    id: 'TC-771092',
     name: 'Rohan Gupta',
-    trainee_type: 'formal',
+    training_center_type: 'formal',
     district: 'Pune',
     sector: 'Electronics & Hardware',
     training_center: 'Pune Skill Hub #2',
@@ -267,9 +268,9 @@ export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
     availability: 'Immediate'
   },
   {
-    id: 'TR-553102',
+    id: 'TC-553102',
     name: 'Priyanka Das',
-    trainee_type: 'formal',
+    training_center_type: 'formal',
     district: 'Nagpur',
     sector: 'IT-eFS',
     training_center: 'Nagpur Tech Vocational Center',
@@ -281,9 +282,9 @@ export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
     availability: 'Within 15 Days'
   },
   {
-    id: 'TR-664210',
+    id: 'TC-664210',
     name: 'Vikram Singh',
-    trainee_type: 'informal',
+    training_center_type: 'informal',
     district: 'Nashik',
     sector: 'Automotive',
     training_center: 'North Maharashtra Skill Academy',
@@ -295,9 +296,9 @@ export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
     availability: 'Immediate'
   },
   {
-    id: 'TR-339811',
+    id: 'TC-339811',
     name: 'Sunita Devi',
-    trainee_type: 'informal',
+    training_center_type: 'informal',
     district: 'Chhatrapati Sambhajinagar',
     sector: 'Textiles & Apparel',
     training_center: 'Chhatrapati Sambhajinagar Micro-Skill Center',
@@ -309,9 +310,9 @@ export const MOCK_CANDIDATE_TRAINEES: CandidateTrainee[] = [
     availability: 'Within 30 Days'
   },
   {
-    id: 'TR-994301',
+    id: 'TC-994301',
     name: 'Amitabh Kumar',
-    trainee_type: 'formal',
+    training_center_type: 'formal',
     district: 'Pune',
     sector: 'Solar & Renewable Energy',
     training_center: 'Pune Skill Development Institute #4',
@@ -330,70 +331,116 @@ export const MOCK_CENTER_PERFORMANCE: TrainingCenterPerformance[] = [
     center_name: 'Pune Skill Development Institute #4',
     district: 'Pune',
     sector: 'Electronics & Hardware',
-    total_trainees: 450,
-    trainee_satisfaction_score: 94,
+    total_training_centers: 450,
+    training_center_satisfaction_score: 94,
     placement_rate: 89,
     retention_180_rate: 82,
     avg_starting_salary_inr: 18500,
     sentinel_flags_count: 0,
     performance_rating: 'Top Performing',
-    trainee_feedback_summary: '96% of trainees reported excellent practical lab equipment, high instructor availability, and timely job placement support.'
+    training_center_feedback_summary: '96% of training centers reported excellent practical lab equipment, high instructor availability, and timely job placement support.'
   },
   {
     center_id: 'CTR-Nagpur-02',
     center_name: 'Nagpur Tech Vocational Center',
     district: 'Nagpur',
     sector: 'IT & ITES',
-    total_trainees: 320,
-    trainee_satisfaction_score: 88,
+    total_training_centers: 320,
+    training_center_satisfaction_score: 88,
     placement_rate: 82,
     retention_180_rate: 74,
     avg_starting_salary_inr: 15800,
     sentinel_flags_count: 1,
     performance_rating: 'High Retention',
-    trainee_feedback_summary: 'Strong digital literacy modules and Soft Skills training; 88% trainees verified steady wage payments.'
+    training_center_feedback_summary: 'Strong digital literacy modules and Soft Skills training; 88% training centers verified steady wage payments.'
   },
   {
     center_id: 'CTR-Nashik-01',
     center_name: 'North Maharashtra Skill Academy',
     district: 'Nashik',
     sector: 'Automotive',
-    total_trainees: 280,
-    trainee_satisfaction_score: 79,
+    total_training_centers: 280,
+    training_center_satisfaction_score: 79,
     placement_rate: 74,
     retention_180_rate: 65,
     avg_starting_salary_inr: 14500,
     sentinel_flags_count: 1,
     performance_rating: 'Satisfactory',
-    trainee_feedback_summary: 'Good automotive workshop facilities; trainees suggested more frequent local employer placement drives.'
+    training_center_feedback_summary: 'Good automotive workshop facilities; training centers suggested more frequent local employer placement drives.'
   },
   {
     center_id: 'CTR-CS-03',
     center_name: 'Chhatrapati Sambhajinagar Micro-Skill Center',
     district: 'Chhatrapati Sambhajinagar',
     sector: 'Apparel & Handloom',
-    total_trainees: 210,
-    trainee_satisfaction_score: 91,
+    total_training_centers: 210,
+    training_center_satisfaction_score: 91,
     placement_rate: 86,
     retention_180_rate: 79,
     avg_starting_salary_inr: 16200,
     sentinel_flags_count: 0,
     performance_rating: 'Top Performing',
-    trainee_feedback_summary: 'Exceptional self-employment support for informal sector textile artisans and UPI digital payment onboarding.'
+    training_center_feedback_summary: 'Exceptional self-employment support for informal sector textile artisans and UPI digital payment onboarding.'
   },
   {
     center_id: 'CTR-Pune-02',
     center_name: 'Pune Skill Hub #2',
     district: 'Pune',
     sector: 'Healthcare & Logistics',
-    total_trainees: 190,
-    trainee_satisfaction_score: 64,
+    total_training_centers: 190,
+    training_center_satisfaction_score: 64,
     placement_rate: 62,
     retention_180_rate: 51,
     avg_starting_salary_inr: 12000,
     sentinel_flags_count: 3,
     performance_rating: 'Needs Review',
-    trainee_feedback_summary: 'Multiple trainee reports regarding delayed placement letters and duplicate salary slip verification flags.'
+    training_center_feedback_summary: 'Multiple reports regarding delayed placement letters and duplicate salary slip verification flags.'
   }
 ];
 
+export const MOCK_INVITES: InviteRecord[] = [
+  {
+    id: 'inv-101',
+    token: 'inv-8f92a10b-3341',
+    recipientName: 'Kavita Patel',
+    recipientPhone: '+919876543210',
+    recipientEmail: 'kavita.patel@example.com',
+    customMessage: 'Please complete your registration with Pune Skill Center so we can finalize your outcome record.',
+    status: 'sent',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString()
+  },
+  {
+    id: 'inv-102',
+    token: 'inv-4b12c89d-7721',
+    recipientName: 'Suresh More',
+    recipientPhone: '+919812345678',
+    recipientEmail: 'suresh.more@example.com',
+    customMessage: 'Welcome to the skill program. Click link to complete registration.',
+    status: 'opened',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 6).toISOString()
+  },
+  {
+    id: 'inv-103',
+    token: 'inv-9e33f11a-5542',
+    recipientName: 'Aarti Deshmukh',
+    recipientPhone: '+919765432109',
+    recipientEmail: 'aarti.d@example.com',
+    customMessage: 'Registration invite for Solar Technician course.',
+    status: 'completed',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5).toISOString()
+  },
+  {
+    id: 'inv-104',
+    token: 'inv-2c44e99b-1102',
+    recipientName: 'Ramesh Jadhav',
+    recipientPhone: '+919654321098',
+    recipientEmail: 'ramesh.j@example.com',
+    customMessage: 'Expiring invite link.',
+    status: 'expired',
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
+    expiresAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString()
+  }
+];

@@ -7,16 +7,16 @@ import { IncentiveItem } from '@/lib/types';
 import { SkillPassportBadge } from '@/components/rewards/SkillPassportBadge';
 import { Gift, Lock, Unlock, CheckCircle2, Building, Sparkles } from 'lucide-react';
 
-export default function TraineeRewardsPage() {
+export default function TrainingCenterRewardsPage() {
   const { user } = useAuth();
   const [incentives, setIncentives] = useState<IncentiveItem[]>([]);
-  const trainee = user?.traineeProfile;
+  const tc = user?.trainingCenterProfile;
 
   useEffect(() => {
     const fetchIncentives = async () => {
-      if (!trainee) return;
+      if (!tc) return;
       try {
-        const data = await api.getIncentiveLedger(trainee.trainee_id);
+        const data = await api.getIncentiveLedger(tc.training_center_id);
         setIncentives(data);
       } catch (err) {
         console.error(err);
@@ -25,14 +25,14 @@ export default function TraineeRewardsPage() {
     fetchIncentives();
   }, [user]);
 
-  if (!trainee) return null;
+  if (!tc) return null;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2.5 py-1 rounded-md mb-2">
-            <Gift className="w-3.5 h-3.5" /> Incentive Layer (Trainee Role)
+            <Gift className="w-3.5 h-3.5" /> Incentive Layer (Training Center Role)
           </div>
           <h1 className="text-2xl font-extrabold text-white">Beneficiary Rewards & Scheme Access</h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -41,7 +41,7 @@ export default function TraineeRewardsPage() {
         </div>
       </div>
 
-      <SkillPassportBadge trainee={trainee} />
+      <SkillPassportBadge trainingCenter={tc} />
 
       <div className="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
         <h3 className="text-lg font-bold text-white flex items-center gap-2">

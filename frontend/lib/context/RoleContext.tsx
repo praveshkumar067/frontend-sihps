@@ -13,7 +13,7 @@ interface RoleContextType {
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeRole, setActiveRole] = useState<Role>('trainee');
+  const [activeRole, setActiveRole] = useState<Role>('training-center');
   const [isMockData, setIsMockData] = useState<boolean>(true);
 
   return (

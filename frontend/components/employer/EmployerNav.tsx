@@ -11,7 +11,7 @@ export const EmployerNav: React.FC = () => {
   const navItems = [
     { label: 'Employer Hub', href: '/employer', icon: Building2 },
     { label: 'Submit Feedback', href: '/employer/feedback', icon: MessageSquarePlus },
-    { label: 'Trainee Skill Match', href: '/employer/candidates', icon: Users },
+    { label: 'Training Center Skill Match', href: '/employer/candidates', icon: Users },
   ];
 
   return (
@@ -45,4 +45,3 @@ export const EmployerNav: React.FC = () => {
     </nav>
   );
 };
-

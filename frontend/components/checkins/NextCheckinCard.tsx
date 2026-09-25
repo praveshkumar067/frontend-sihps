@@ -13,9 +13,9 @@ interface NextCheckinCardProps {
 
 export const NextCheckinCard: React.FC<NextCheckinCardProps> = ({ checkin, onSubmitted }) => {
   const { user } = useAuth();
-  const traineeType = user?.trainee_type || user?.traineeProfile?.trainee_type || 'formal';
+  const tcType = user?.training_center_type || user?.trainingCenterProfile?.training_center_type || 'formal';
 
-  const defaultStatus: EmploymentStatus = traineeType === 'informal' ? 'self-employed' : 'employed';
+  const defaultStatus: EmploymentStatus = tcType === 'informal' ? 'self-employed' : 'employed';
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>(defaultStatus);
   const [employerName, setEmployerName] = useState<string>('Apex Micro-Electronics');
@@ -27,15 +27,15 @@ export const NextCheckinCard: React.FC<NextCheckinCardProps> = ({ checkin, onSub
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    setEmploymentStatus(traineeType === 'informal' ? 'self-employed' : 'employed');
-  }, [traineeType]);
+    setEmploymentStatus(tcType === 'informal' ? 'self-employed' : 'employed');
+  }, [tcType]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
       await api.submitCheckIn({
-        trainee_id: checkin.trainee_id,
+        training_center_id: checkin.training_center_id,
         milestone_days: checkin.milestone_days,
         employment_status: employmentStatus,
         outcome_path: {
@@ -56,7 +56,7 @@ export const NextCheckinCard: React.FC<NextCheckinCardProps> = ({ checkin, onSub
     }
   };
 
-  const statusOptions = traineeType === 'formal'
+  const statusOptions = tcType === 'formal'
     ? [
         { id: 'employed', label: '💼 Salaried Employment (Formal)' },
         { id: 'unemployed', label: '🔍 Job Seeking' },
